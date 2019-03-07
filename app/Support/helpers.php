@@ -1,6 +1,6 @@
 <?php
 
-if (!function_exists('debug_blacklist')) {
+if (! function_exists('debug_blacklist')) {
     function debug_blacklist($secrets, $key = null): array
     {
         $superGlobalNames = $key ?? [
@@ -14,8 +14,8 @@ if (!function_exists('debug_blacklist')) {
             ];
         $blacklist = [];
 
-        foreach ((array)$superGlobalNames as $superGlobalName) {
-            foreach ((array)$secrets as $secret) {
+        foreach ((array) $superGlobalNames as $superGlobalName) {
+            foreach ((array) $secrets as $secret) {
                 $blacklist[$superGlobalName][] = $secret;
             }
         }
