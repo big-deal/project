@@ -1,22 +1,26 @@
 <?php
 
-if (! function_exists('debug_blacklist')) {
-    function debug_blacklist($secrets, $key = null): array
+if (!function_exists('debug_blacklist')) {
+    /**
+     * @param array|string $secrets
+     * @return array
+     */
+    function debug_blacklist($secrets): array
     {
-        $superGlobalNames = $key ?? [
-                '_GET',
-                '_POST',
-                '_FILES',
-                '_COOKIE',
-                '_SESSION',
-                '_SERVER',
-                '_ENV',
-            ];
+        $superGlobalNames = [
+            '_GET',
+            '_POST',
+            '_FILES',
+            '_COOKIE',
+            '_SESSION',
+            '_SERVER',
+            '_ENV',
+        ];
         $blacklist = [];
 
-        foreach ((array) $superGlobalNames as $superGlobalName) {
-            foreach ((array) $secrets as $secret) {
-                $blacklist[$superGlobalName][] = $secret;
+        foreach ($superGlobalNames as $key) {
+            foreach ((array)$secrets as $secret) {
+                $blacklist[$key][] = $secret;
             }
         }
 
