@@ -1,6 +1,6 @@
 <?php
 
-if (!function_exists('debug_blacklist')) {
+if (! function_exists('debug_blacklist')) {
     /**
      * @param array|string $secrets
      * @return array
@@ -19,7 +19,7 @@ if (!function_exists('debug_blacklist')) {
         $blacklist = [];
 
         foreach ($superGlobalNames as $key) {
-            foreach ((array)$secrets as $secret) {
+            foreach ((array) $secrets as $secret) {
                 $blacklist[$key][] = $secret;
             }
         }
