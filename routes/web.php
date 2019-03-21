@@ -14,3 +14,14 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes([
+    'register' => false,
+    'verify' => true,
+]);
+
+Route::group(['middleware' => 'verified'], function () {
+
+    Route::get('/home', 'HomeController@index')->name('home');
+
+});
