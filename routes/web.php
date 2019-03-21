@@ -21,7 +21,5 @@ Auth::routes([
 ]);
 
 Route::group(['middleware' => 'verified'], function () {
-
     Route::get('/home', 'HomeController@index')->name('home');
-
 });
