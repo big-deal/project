@@ -1,8 +1,8 @@
 <?php
 
 use App\Models\User;
-use Faker\Generator as Faker;
 use Illuminate\Support\Str;
+use Faker\Generator as Faker;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
 |
 */
 
-/**
+/*
  * @var \Illuminate\Database\Eloquent\Factory $factory
  */
 $factory->define(User::class, static function (Faker $faker): array {
