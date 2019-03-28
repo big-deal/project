@@ -2,24 +2,21 @@
 
 namespace App\Console\Commands;
 
-use App\Models\User;
+use App\Models\Team;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 
-class UserCreate extends Command
+class TeamCreate extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'user:create
-                            {--N|name=     : User name}
-                            {--E|email=    : User email}
-                            {--P|password= : User password}
-                            {--T|team=*    : Attach team}';
+    protected $signature = 'team:create
+                            {title : Team title}
+                            {user* : User ids}';
 
     /**
      * The console command description.
@@ -46,15 +43,12 @@ class UserCreate extends Command
     protected function getValidator(array $data = []): ValidatorContract
     {
         return Validator::make($data + [
-                'name' => $this->option('name') ?? $this->ask('What is your name?'),
-                'email' => $this->option('email') ?? $this->ask('What is your email?'),
-                'password' => $this->option('password') ?? $this->ask('What is your password?', 'secret'),
-                'team' => $this->option('team') ?? [],
+                'title' => $this->argument('title'),
+                'user' => $this->argument('user'),
             ],
             [
-                'name' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                'team' => ['nullable', 'exists:teams,id'],
+                'title' => ['required', 'string', 'max:100'],
+                'user' => ['nullable', 'exists:users,id'],
             ]
         );
     }
@@ -69,7 +63,7 @@ class UserCreate extends Command
         $validator = $this->getValidator();
 
         if ($validator->fails()) {
-            $this->info('User not created. See error messages below:');
+            $this->info('Team not created. See error messages below:');
 
             foreach ($validator->errors()->all() as $error) {
                 $this->error("\t".$error);
@@ -80,16 +74,14 @@ class UserCreate extends Command
 
         $data = collect($validator->getData());
 
-        $user = tap(User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]))->markEmailAsVerified();
+        $team = Team::create([
+            'title' => $data['title'],
+        ]);
 
         return $this->call(
-            'user:attach-team',
-            $data->merge(['user' => $user->id])
-                ->only('user', 'team')
+            'team:attach-user',
+            $data->merge(['user' => $team->id])
+                ->only('team', 'user')
                 ->toArray()
         );
     }
