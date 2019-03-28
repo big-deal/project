@@ -4,8 +4,8 @@ namespace App\Console\Commands;
 
 use App\Models\User;
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 
 class UserAttachTeam extends Command
 {
@@ -47,8 +47,8 @@ class UserAttachTeam extends Command
                 'team' => $this->argument('team'),
             ],
             [
-                'user' => ['required', 'exists:users,id',],
-                'team' => ['required', 'exists:teams,id',],
+                'user' => ['required', 'exists:users,id'],
+                'team' => ['required', 'exists:teams,id'],
             ]
         );
     }
@@ -68,6 +68,7 @@ class UserAttachTeam extends Command
             foreach ($validator->errors()->all() as $error) {
                 $this->error("\t".$error);
             }
+
             return 1;
         }
 

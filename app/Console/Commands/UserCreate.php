@@ -4,9 +4,9 @@ namespace App\Console\Commands;
 
 use App\Models\User;
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 
 class UserCreate extends Command
 {
@@ -52,9 +52,9 @@ class UserCreate extends Command
                 'team' => $this->option('team') ?? [],
             ],
             [
-                'name' => ['required', 'string', 'max:255',],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users',],
-                'team' => ['nullable', 'exists:teams,id',],
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'team' => ['nullable', 'exists:teams,id'],
             ]
         );
     }
@@ -74,6 +74,7 @@ class UserCreate extends Command
             foreach ($validator->errors()->all() as $error) {
                 $this->error("\t".$error);
             }
+
             return 1;
         }
 
